@@ -16,7 +16,10 @@ on:
   repository_dispatch:
   workflow_dispatch:
 
+#环境变量
+
 env:
+  #源码仓库
   REPO_URL: https://github.com/coolsnowwolf/lede
   REPO_BRANCH: master
   FEEDS_CONF: feeds.conf.default
