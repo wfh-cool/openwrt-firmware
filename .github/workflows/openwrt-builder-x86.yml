@@ -37,6 +37,7 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
+# 查看设备信息
     - name: Check Server Performance
       run: |
         echo "警告⚠"
@@ -51,7 +52,7 @@ jobs:
         echo -e "$(sudo lshw -short -C memory | grep GiB)\n"
         echo "--------------------------硬盘信息--------------------------"
         echo "硬盘数量: $(ls /dev/sd* | grep -v [1-9] | wc -l)" && df -hT
-
+# 对硬盘分区调整，因为默认的空间不够用
     - name: Before freeing up disk space
       run: |
         echo "Before freeing up disk space"
@@ -99,7 +100,7 @@ jobs:
 
     - name: Checkout
       uses: actions/checkout@main
-
+# 部署系统环境
     - name: Initialization environment
       env:
         DEBIAN_FRONTEND: noninteractive
@@ -128,6 +129,8 @@ jobs:
     - name: Update feeds
       run: cd openwrt && ./scripts/feeds update -a
 
+    - name: delete failed package
+      run: cd openwrt && rm -rf feeds/smpackage/{base-files,dnsmasq,firewall*,fullconenat,libnftnl,nftables,ppp,opkg,ucl,upx,vsftpd*,miniupnpd-iptables,wireless-regdb,webd}
     - name: Install feeds
       run: cd openwrt && ./scripts/feeds install -a
 
