@@ -10,7 +10,7 @@
 # See /LICENSE for more information.
 #
 
-name: OpenWrt Builder x86
+name: x86-lede
 
 on:
   repository_dispatch:
@@ -22,8 +22,8 @@ env:
   #源码仓库
   REPO_URL: https://github.com/coolsnowwolf/lede
   REPO_BRANCH: master
-  FEEDS_CONF: feeds.conf.default
-  CONFIG_FILE: x86.config
+  FEEDS_CONF: lede-feeds.conf.default
+  CONFIG_FILE: x86-lede.config
   CACHE_TOOLCHAIN: true
   DIY_P1_SH: diy-part1.sh
   DIY_P2_SH: diy-part2.sh
@@ -193,7 +193,7 @@ jobs:
       id: tag
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       run: |
-        echo "release_tag=$(date +"%Y.%m.%d")-x86" >> $GITHUB_OUTPUT
+        echo "release_tag=$(date +"%Y.%m.%d")-x86-lede" >> $GITHUB_OUTPUT
         touch release.txt
         [ ${UPLOAD_GOFILE} = true && ${{ steps.gofile.outputs.url }} ] && echo "🔗 [GoFile](${{ steps.gofile.outputs.url }})" >> release.txt
         echo "status=success" >> $GITHUB_OUTPUT
