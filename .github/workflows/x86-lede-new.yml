@@ -71,7 +71,17 @@ jobs:
       working-directory: ./
       run: |
         git clone $REPO_URL -b $REPO_BRANCH openwrt
-      
+        
+    - name: Restore cache
+      uses: actions/cache@v4
+      with:
+        path: |
+          openwrt/dl
+          openwrt/staging_dir/toolchain-*
+        key: openwrt-${{ hashFiles('openwrt/.config') }}
+        restore-keys: |
+          openwrt-      
+          
     - name: Load custom feeds
       run: |
         [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
@@ -136,7 +146,7 @@ jobs:
       run: |
         cd openwrt/bin/targets/*/*
         rm -rf packages
-        cp openwrt/.config .
+        cp $GITHUB_WORKSPACE/openwrt/.config .
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "status=success" >> $GITHUB_OUTPUT
 
