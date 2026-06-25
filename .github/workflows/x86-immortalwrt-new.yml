@@ -70,7 +70,16 @@ jobs:
       working-directory: ./
       run: |
         git clone $REPO_URL -b $REPO_BRANCH openwrt
-      
+        
+    - name: Restore cache
+      uses: actions/cache@v4
+      with:
+        path: |
+          openwrt/dl
+          openwrt/staging_dir/toolchain-*
+        key: immortwrt-${{ hashFiles('openwrt/.config') }}
+        restore-keys: |
+          immortwrt-  
     - name: Load custom feeds
       run: |
         [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
@@ -82,7 +91,7 @@ jobs:
       run: cd openwrt && ./scripts/feeds update -a
 
     - name: delete failed package
-      run: cd openwrt && rm -rf feeds/smpackage/{base-files,dnsmasq,firewall*,fullconenat,libnftnl,nftables,ppp,opkg,ucl,upx,vsftpd*,miniupnpd-iptables,wireless-regdb,webd}
+      run: cd openwrt && rm -rf feeds/smpackage/{base-files,dnsmasq,firewall*,fullconenat,libnftnl,nftables,ppp,opkg,ucl,upx,vsftpd*,miniupnpd-iptables,wireless-regdb}
     - name: Install feeds
       run: cd openwrt && ./scripts/feeds install -a
 
@@ -97,7 +106,7 @@ jobs:
     - name: SSH connection to Actions
       uses: P3TERX/ssh2actions@v1.0.0
       if: true
-      
+   
     - name: Download package
       id: package
       run: |
