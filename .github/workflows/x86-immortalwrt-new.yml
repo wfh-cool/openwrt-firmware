@@ -71,15 +71,16 @@ jobs:
       run: |
         git clone $REPO_URL -b $REPO_BRANCH openwrt
         
-    - name: Restore cache
-      uses: actions/cache@v4
-      with:
-        path: |
-          openwrt/dl
-          openwrt/staging_dir/toolchain-*
-        key: immortwrt-${{ hashFiles('openwrt/.config') }}
-        restore-keys: |
-          immortwrt-  
+   # - name: Restore cache
+   #   uses: actions/cache@v4
+  #    with:
+   #     path: |
+    #      openwrt/dl
+      #    openwrt/staging_dir/toolchain-*
+   #     key: immortwrt-${{ hashFiles('openwrt/.config') }}
+    #    restore-keys: |
+    #      immortwrt-  
+    
     - name: Load custom feeds
       run: |
         [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
