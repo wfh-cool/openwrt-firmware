@@ -108,6 +108,13 @@ jobs:
  #   - name: SSH connection to Actions
   #    uses: P3TERX/ssh2actions@v1.0.0
 #      if: true
+
+      # 在 Start SSH via ngrok 之前添加这一步
+    - name: Update ngrok to v3
+      run: |
+          wget -q https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.zip
+          unzip -o ngrok-v3-stable-linux-amd64.zip -d /usr/local/bin
+          ngrok -v
     - name: Start SSH via ngrok
       uses: P3TERX/ssh2actions@main
       with:
